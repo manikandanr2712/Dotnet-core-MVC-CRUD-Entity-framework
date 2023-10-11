@@ -1,0 +1,158 @@
+﻿@model Nice_CRUD.Models.Domain.EmployeeModel
+
+<h2>Edit Employee</h2>
+
+<form asp-action="Edit" method="post">
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        <label asp-for="Name">Name</label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Email">Email</label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Phone">Phone</label>
+        <input asp-for="Phone" class="form-control" />
+        <span asp-validation-for="Phone" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CountryId">Country</label>
+        <select id="CountryId" asp-for="CountryId" class="form-control">
+            <option value="">Select Country</option>
+            @foreach (var country in ViewBag.Countries)
+            {
+                <option value="@country.Id">@country.Name</option>
+            }
+        </select>
+        <span asp-validation-for="CountryId" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="StateId">State</label>
+        <select id="StateId" asp-for="StateId" class="form-control">
+            <option value="">Select State</option>
+            @foreach (var state in ViewBag.States)
+            {
+                <option value="@state.Id">@state.Name</option>
+            }
+        </select>
+        <span asp-validation-for="StateId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CityId">City</label>
+        <select id="CityId" asp-for="CityId" class="form-control">
+            <option value="">Select City</option>
+            @foreach (var city in ViewBag.Cities)
+            {
+                <option value="@city.Id">@city.Name</option>
+            }
+        </select>
+        <span asp-validation-for="CityId" class="text-danger"></span>
+    </div>
+
+
+
+
+    <button type="submit" class="btn btn-primary mt-2">Save</button>
+    <a asp-action="Index" class="btn btn-secondary mt-2">Cancel</a>
+</form>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+   <script>
+        $(document).ready(function () {
+            // Attach change event handlers to the dropdowns
+            $("#CountryId").change(populateStates);
+            $("#StateId").change(populateCities);
+
+            // On page load, check if a Country is preselected and populate the dropdowns accordingly
+            if ($("#CountryId").val() !== "") {
+                populateStates(); // Populate States
+                if ($("#StateId").val() !== "") {
+                    populateCities(); // Populate Cities if a State is preselected
+                }
+            }
+
+            var selectedStateId = @Html.Raw(Json.Serialize(ViewBag.SelectedStateId)); // Use Raw and Json.Serialize to avoid JavaScript escaping
+            var selectedCityId = @Html.Raw(Json.Serialize(ViewBag.SelectedCityId)); // Use Raw and Json.Serialize to avoid JavaScript escaping
+
+            // Set the selected State
+            $("#StateId").val(selectedStateId);
+
+            // Trigger change event to populate Cities based on the selected State
+            $("#StateId").change();
+
+            // Set the selected City
+            $("#CityId").val(selectedCityId);
+        });
+   </script>
+
+@*    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // Cascading dropdowns
+        <script>
+            $(document).ready(function () {
+                // Function to populate the State dropdown based on the selected Country
+                function populateStates() {
+                    var countryId = $("#CountryId").val();
+                    $.get("/Employee/GetStates", { countryId: countryId }, function (data) {
+                        $("#StateId").empty();
+                        $("#StateId").append("<option value=''>Select State</option>");
+                        $.each(data, function (index, state) {
+                            $("#StateId").append("<option value='" + state.Id + "'>" + state.Name + "</option>");
+                        });
+
+                        // Trigger a change event on the State dropdown to populate the City dropdown
+                        $("#StateId").change();
+                    });
+                }
+
+                // Function to populate the City dropdown based on the selected State
+                function populateCities() {
+                    var stateId = $("#StateId").val();
+                    $.get("/Employee/GetCities", { stateId: stateId }, function (data) {
+                        $("#CityId").empty();
+                        $("#CityId").append("<option value=''>Select City</option>");
+                        $.each(data, function (index, city) {
+                            $("#CityId").append("<option value='" + city.Id + "'>" + city.Name + "</option>");
+                        });
+                    });
+                }
+
+                // Attach change event handlers to the dropdowns
+                $("#CountryId").change(populateStates);
+                $("#StateId").change(populateCities);
+
+                // On page load, check if a Country is preselected and populate the dropdowns accordingly
+                if ($("#CountryId").val() !== "") {
+                    populateStates(); // Populate States
+                    if ($("#StateId").val() !== "") {
+                        populateCities(); // Populate Cities if a State is preselected
+                    }
+                }
+
+                var selectedStateId = @ViewBag.SelectedStateId;
+                var selectedCityId = @ViewBag.SelectedCityId;
+
+                // Set the selected State
+                $("#StateId").val(selectedStateId);
+
+                // Trigger change event to populate Cities based on the selected State
+                $("#StateId").change();
+
+                // Set the selected City
+                $("#CityId").val(selectedCityId);
+            });
+    </script>
+
+
+    </script>*@
+}

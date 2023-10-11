@@ -1,0 +1,180 @@
+﻿@*@model Nice_CRUD.Models.Domain.EmployeeModel
+
+<h2>Create Employee</h2>
+
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label asp-for="Name">Name</label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Email">Email</label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Phone">Phone</label>
+        <input asp-for="Phone" class="form-control" />
+        <span asp-validation-for="Phone" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CountryId">Country</label>
+        <select id="CountryId" asp-for="CountryId" class="form-control">
+            <option value="">Select Country</option>
+            @foreach (var country in ViewBag.Countries)
+            {
+                <option value="@country.Id">@country.Name</option>
+            }
+        </select>
+        <span asp-validation-for="CountryId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="StateId">State</label>
+        <select id="StateId" asp-for="StateId" class="form-control">
+            <option value="">Select State</option>
+        </select>
+        <span asp-validation-for="StateId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CityId">City</label>
+        <select id="CityId" asp-for="CityId" class="form-control">
+            <option value="">Select City</option>
+        </select>
+        <span asp-validation-for="CityId" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-2">Create</button>
+    <a asp-action="Index" class="btn btn-secondary mt-2">Back</a>
+</form>
+
+<section class="form-section">
+    <h2>Cascading Dropdowns</h2>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // Cascading dropdowns
+        $(document).ready(function () {
+            $("#CountryId").change(function () {
+                var countryId = $(this).val();
+                $.get("/Employee/GetStates", { countryId: countryId }, function (data) {
+                    $("#StateId").empty();
+                    $("#StateId").append("<option value=''>Select State</option>");
+                    $.each(data, function (index, state) {
+                        $("#StateId").append("<option value='" + state.id + "'>" + state.name + "</option>");
+                    });
+                });
+            });
+
+            $("#StateId").change(function () {
+                var stateId = $(this).val();
+                $.get("/Employee/GetCities", { stateId: stateId }, function (data) {
+                    $("#CityId").empty();
+                    $("#CityId").append("<option value=''>Select City</option>");
+                    $.each(data, function (index, city) {
+                        $("#CityId").append("<option value='" + city.id + "'>" + city.name + "</option>");
+                    });
+                });
+            });
+        });
+    </script>
+</section>
+*@
+
+@model Nice_CRUD.Models.AddEmployeeModel
+
+<h2>Create Employee</h2>
+
+<form asp-action="Create" method="post">
+    @Html.AntiForgeryToken()
+    <div class="form-group">
+        <label asp-for="Name">Name</label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Email">Email</label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Phone">Phone</label>
+        <input asp-for="Phone" class="form-control" />
+        <span asp-validation-for="Phone" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CountryId">Country</label>
+        <select id="CountryId" asp-for="CountryId" class="form-control">
+            <option value="">Select Country</option>
+            @if (ViewBag.Countries != null)
+            {
+                @foreach (var country in ViewBag.Countries)
+                {
+                    <option value="@country.Id">@country.Name</option>
+                }
+            }
+            else
+            {
+                <!-- Handle the case when ViewBag.Countries is null -->
+                <option value="">No countries available</option>
+            }
+        </select>
+        <span asp-validation-for="CountryId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="StateId">State</label>
+        <select id="StateId" asp-for="StateId" class="form-control">
+            <option value="">Select State</option>
+        </select>
+        <span asp-validation-for="StateId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CityId">City</label>
+        <select id="CityId" asp-for="CityId" class="form-control">
+            <option value="">Select City</option>
+        </select>
+        <span asp-validation-for="CityId" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-2">Create</button>
+    <a asp-action="Index" class="btn btn-secondary mt-2">Back</a>
+</form>
+
+<section class="form-section">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // Cascading dropdowns
+        $(document).ready(function () {
+            $("#CountryId").change(function () {
+                var countryId = $(this).val();
+                $.get("/Employee/GetStates", { countryId: countryId }, function (data) {
+                    $("#StateId").empty();
+                    $("#StateId").append("<option value=''>Select State</option>");
+                    $.each(data, function (index, state) {
+                        $("#StateId").append("<option value='" + state.id + "'>" + state.name + "</option>");
+                    });
+                });
+            });
+
+            $("#StateId").change(function () {
+                var stateId = $(this).val();
+                $.get("/Employee/GetCities", { stateId: stateId }, function (data) {
+                    $("#CityId").empty();
+                    $("#CityId").append("<option value=''>Select City</option>");
+                    $.each(data, function (index, city) {
+                        $("#CityId").append("<option value='" + city.id + "'>" + city.name + "</option>");
+                    });
+                });
+            });
+        });
+    </script>
+</section>
