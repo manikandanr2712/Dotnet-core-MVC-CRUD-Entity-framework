@@ -86,3 +86,7 @@ C:\Users\manikandan.r\Documents\Nice_CRUD\Nice_CRUD\obj\Debug\net6.0\Nice_CRUD.p
 C:\Users\manikandan.r\Documents\Nice_CRUD\Nice_CRUD\obj\Debug\net6.0\Nice_CRUD.genruntimeconfig.cache
 C:\Users\manikandan.r\Documents\Nice_CRUD\Nice_CRUD\obj\Debug\net6.0\ref\Nice_CRUD.dll
 C:\Users\manikandan.r\Documents\Nice_CRUD\Nice_CRUD\bin\Debug\net6.0\libman.json
+C:\Users\manikandan.r\Documents\Nice_CRUD\Nice_CRUD\bin\Debug\net6.0\Xceed.Document.NET5.dll
+C:\Users\manikandan.r\Documents\Nice_CRUD\Nice_CRUD\bin\Debug\net6.0\Xceed.Words.NET5.dll
+C:\Users\manikandan.r\Documents\Nice_CRUD\Nice_CRUD\bin\Debug\net6.0\System.IO.Packaging.dll
+C:\Users\manikandan.r\Documents\Nice_CRUD\Nice_CRUD\bin\Debug\net6.0\DinkToPdf.dll

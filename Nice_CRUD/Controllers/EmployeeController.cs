@@ -4,7 +4,10 @@ using Microsoft.EntityFrameworkCore;
 using Nice_CRUD.Data;
 using Nice_CRUD.Models;
 using Nice_CRUD.Models.Domain;
+using System.Text;
 using static Nice_CRUD.Models.Domain.EmployeeModel;
+using DinkToPdf;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
 
 namespace Nice_CRUD.Controllers
 {
@@ -67,7 +70,7 @@ namespace Nice_CRUD.Controllers
             // Repopulate the dropdown lists based on the selected Country and State
             ViewBag.Countries = _context.Countries.ToList();
 
-            if (viewModel.Name != null ||  viewModel.Email != null || viewModel?.CountryId != null  || viewModel?.StateId != null || viewModel?.CityId != null)
+            if (viewModel.Name != null && viewModel.Email != null && viewModel?.CountryId != null && viewModel?.StateId != null && viewModel?.CityId != null)
             {
                 // Create an Employee entity and populate its properties from the ViewModel
                 var employee = new EmployeeModel()
@@ -85,27 +88,6 @@ namespace Nice_CRUD.Controllers
                 _context.SaveChanges();
                 return RedirectToAction("Index"); // Redirect to the desired page after successful submission
             }
-            //else
-            //{
-            //    var employee = new EmployeeModel()
-            //    {
-            //        Name = viewModel.Name,
-            //        Email = viewModel.Email,
-            //        Phone = viewModel.Phone,
-            //        CountryId = viewModel.CountryId,
-            //        StateId = viewModel.StateId,
-            //        CityId = viewModel.CityId,
-
-            //    };
-
-            //    _context.Employees.Add(employee);
-            //    _context.SaveChanges();
-            //    return RedirectToAction("Index"); // Redirect to the desired page after successful submission
-            //}
-
-            // If the ModelState is not valid, redisplay the form with validation errors
-
-            
 
             return View(viewModel);
         }
@@ -179,7 +161,8 @@ namespace Nice_CRUD.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(EmployeeModel viewModel)
         {
-            if (ModelState.IsValid)
+            if (viewModel.Name != null && viewModel.Email != null && viewModel?.CountryId != null && viewModel?.StateId != null && viewModel?.CityId != null)
+
             {
                 // Retrieve the existing employee from the database
                 var existingEmployee = _context.Employees.Find(viewModel.Id);
@@ -208,6 +191,8 @@ namespace Nice_CRUD.Controllers
             return View(viewModel);
         }
 
+        
+        }
 
-    }
+   
 }

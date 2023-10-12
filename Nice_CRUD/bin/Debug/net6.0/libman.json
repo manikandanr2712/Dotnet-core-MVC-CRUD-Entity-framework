@@ -10,5 +10,11 @@
       "library": "datatables.net@2.1.1",
       "destination": "wwwroot/datatables.net/"
     }
-  ]
+  ,
+{
+  "provider": "cdnjs",
+  "library": "popper.js@2.11.8",
+  "destination": "wwwroot/popper.js/"
+}
+]
 }

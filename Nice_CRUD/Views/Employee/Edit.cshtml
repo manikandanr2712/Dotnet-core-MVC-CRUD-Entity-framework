@@ -34,13 +34,17 @@
         </select>
         <span asp-validation-for="CountryId" class="text-danger"></span>
     </div>
+
     <div class="form-group">
         <label asp-for="StateId">State</label>
         <select id="StateId" asp-for="StateId" class="form-control">
             <option value="">Select State</option>
-            @foreach (var state in ViewBag.States)
+            @if (ViewBag.States != null)
             {
-                <option value="@state.Id">@state.Name</option>
+                foreach (var state in ViewBag.States)
+                {
+                    <option value="@state.Id">@state.Name</option>
+                }
             }
         </select>
         <span asp-validation-for="StateId" class="text-danger"></span>
@@ -50,16 +54,16 @@
         <label asp-for="CityId">City</label>
         <select id="CityId" asp-for="CityId" class="form-control">
             <option value="">Select City</option>
-            @foreach (var city in ViewBag.Cities)
+            @if (ViewBag.Cities != null)
             {
-                <option value="@city.Id">@city.Name</option>
+                foreach (var city in ViewBag.Cities)
+                {
+                    <option value="@city.Id">@city.Name</option>
+                }
             }
         </select>
         <span asp-validation-for="CityId" class="text-danger"></span>
     </div>
-
-
-
 
     <button type="submit" class="btn btn-primary mt-2">Save</button>
     <a asp-action="Index" class="btn btn-secondary mt-2">Cancel</a>
@@ -67,33 +71,34 @@
 
 @section Scripts {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-   <script>
+    <script>
         $(document).ready(function () {
-            // Attach change event handlers to the dropdowns
-            $("#CountryId").change(populateStates);
-            $("#StateId").change(populateCities);
+            $("#CountryId").change(function () {
+                var selectedCountryId = $(this).val();
+                $.get("/Employee/GetStates", { countryId: selectedCountryId }, function (data) {
+                    var stateDropdown = $("#StateId");
+                    stateDropdown.empty();
+                    stateDropdown.append("<option value=''>Select State</option>");
+                    $.each(data, function (index, state) {
+                        stateDropdown.append("<option value='" + state.id + "'>" + state.name + "</option>");
+                    });
+                    stateDropdown.change(); // Trigger state dropdown change
+                });
+            });
 
-            // On page load, check if a Country is preselected and populate the dropdowns accordingly
-            if ($("#CountryId").val() !== "") {
-                populateStates(); // Populate States
-                if ($("#StateId").val() !== "") {
-                    populateCities(); // Populate Cities if a State is preselected
-                }
-            }
-
-            var selectedStateId = @Html.Raw(Json.Serialize(ViewBag.SelectedStateId)); // Use Raw and Json.Serialize to avoid JavaScript escaping
-            var selectedCityId = @Html.Raw(Json.Serialize(ViewBag.SelectedCityId)); // Use Raw and Json.Serialize to avoid JavaScript escaping
-
-            // Set the selected State
-            $("#StateId").val(selectedStateId);
-
-            // Trigger change event to populate Cities based on the selected State
-            $("#StateId").change();
-
-            // Set the selected City
-            $("#CityId").val(selectedCityId);
+            $("#StateId").change(function () {
+                var selectedStateId = $(this).val();
+                $.get("/Employee/GetCities", { stateId: selectedStateId }, function (data) {
+                    var cityDropdown = $("#CityId");
+                    cityDropdown.empty();
+                    cityDropdown.append("<option value=''>Select City</option>");
+                    $.each(data, function (index, city) {
+                        cityDropdown.append("<option value='" + city.id + "'>" + city.name + "</option>");
+                    });
+                });
+            });
         });
-   </script>
+    </script>
 
 @*    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>

@@ -20,3 +20,37 @@ body {
 th::after, th:before {
     display: none !important
 }
+/* Style the DataTables buttons */
+.dt-buttons {
+    padding: 10px; /* Add padding to the button container */
+}
+
+/* Style individual buttons */
+.dt-button {
+    margin: 5px; /* Add margin between buttons */
+    background-color: #007BFF; /* Set the background color */
+    color: #fff; /* Set the text color */
+    border: none; /* Remove borders */
+    border-radius: 4px; /* Add rounded corners */
+    cursor: pointer;
+    font-weight: bold;
+}
+
+    /* Hover effect */
+    .dt-button:hover {
+        background-color: #0056b3; /* Change the background color on hover */
+    }
+
+/* Style the search input field */
+.dataTables_filter {
+    width: 100%;
+}
+
+/* Style the export buttons container */
+.dataTables_buttons {
+    text-align: right; /* Align buttons to the right */
+}
+.download-button {
+    background: url("../assets/download.webp") no-repeat;
+    padding-left: 20px; /* Adjust this value to position the icon correctly */
+}
